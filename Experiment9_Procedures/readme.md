@@ -1,132 +1,102 @@
-
-# EXPERIMENT 9: PL/SQL – PROCEDURES AND FUNCTIONS
+# Experiment 9: PL/SQL – Procedures and Functions
 
 ## AIM
-
 To understand and implement procedures and functions in PL/SQL for performing various operations such as calculations, decision-making, and looping.
+
+---
 
 ## THEORY
 
-PL/SQL (Procedural Language/SQL) extends SQL by adding procedural constructs like variables, conditions, loops, procedures, and functions.
+PL/SQL (Procedural Language/SQL) extends SQL by adding procedural constructs like variables, conditions, loops, procedures, and functions. Procedures and functions are subprograms that help modularize the code and improve reusability.
 
-Procedures and functions are subprograms that help modularize code and improve code reusability.
-
-### 1. PROCEDURE
-
-A PL/SQL procedure is a subprogram that performs a specific action. It does not return a value directly but can return values using OUT parameters.
+### **Procedure**
+A PL/SQL **procedure** is a subprogram that performs a specific action. It does not return a value directly but can return values using `OUT` parameters.
 
 **Syntax:**
-
 ```sql
-CREATE OR REPLACE PROCEDURE procedure_name(parameters)
+CREATE OR REPLACE PROCEDURE procedure_name (parameters)
 IS
 BEGIN
-    -- Statements
+   -- statements
 END;
-/
 ```
 
-**Calling a Procedure:**
+To call the procedure
 
 ```sql
 EXEC procedure_name(arguments);
 ```
 
-### 2. FUNCTION
-
-A PL/SQL function is a subprogram that performs an operation and returns a single value using the RETURN keyword.
-
-**Syntax:**
+### **Function**
+A PL/SQL **function** is a subprogram that returns a single value using the RETURN keyword.
 
 ```sql
-CREATE OR REPLACE FUNCTION function_name(parameters)
+CREATE OR REPLACE FUNCTION function_name (parameters)
 RETURN datatype
 IS
 BEGIN
-    -- Statements
-    RETURN value;
+   -- statements
+   RETURN value;
 END;
-/
 ```
 
-**Calling a Function:**
+To call the function:
 
 ```sql
 SELECT function_name(arguments) FROM DUAL;
 ```
 
-### Key Differences Between Procedures and Functions
+Key Differences:
 
-| Procedure | Function |
-|---|---|
-| Performs a specific action | Performs an operation and returns a value |
-| Does not return a value directly | Must return a value |
-| Can use OUT parameters | Uses RETURN statement |
-| Called using EXEC or from PL/SQL | Can be called from PL/SQL or SQL queries, subject to SQL restrictions |
+-A procedure does not return a value, whereas a function must return a value.
+-Functions can be called from SQL queries, procedures cannot (in most cases).
 
----
+## 1. Write a PL/SQL Procedure to Find the Square of a Number
 
-## PROGRAM 1: PL/SQL PROCEDURE TO FIND THE SQUARE OF A NUMBER
+### Steps:
+- Create a procedure named `find_square`.
+- Declare a parameter to accept a number.
+- Inside the procedure, compute the square of the input number.
+- Use `DBMS_OUTPUT.PUT_LINE` to display the result.
+- Call the procedure with a number as input.
 
-### Algorithm / Steps
-
-1. Create a procedure named `find_square`.
-2. Declare an input parameter to accept a number.
-3. Calculate the square of the input number.
-4. Display the result using `DBMS_OUTPUT.PUT_LINE`.
-5. Call the procedure with a number as input.
-
-### Program
-
-```sql
+**Expected Output:**  
+Square of 6 is 36
+## Program
+```
 SET SERVEROUTPUT ON;
 
-CREATE OR REPLACE PROCEDURE find_square(
-    n IN NUMBER
-)
+CREATE OR REPLACE PROCEDURE find_square(n IN NUMBER)
 IS
-    result NUMBER;
 BEGIN
-    result := n * n;
-
-    DBMS_OUTPUT.PUT_LINE(
-        'Square of ' || n || ' is ' || result
-    );
+    DBMS_OUTPUT.PUT_LINE('Square of ' || n || ' is ' || (n * n));
 END;
 /
-```
 
-### Calling the Procedure
-
-```sql
 EXEC find_square(6);
 ```
+## Output
 
-### Output
-
-<img width="395" height="237" alt="image" src="https://github.com/user-attachments/assets/a7325193-6aa1-4638-bd6d-07c4c12228c0" />
-<img width="352" height="172" alt="image" src="https://github.com/user-attachments/assets/31c4fb68-993b-424b-8bc3-576125145c0c" />
+<img width="497" height="256" alt="image" src="https://github.com/user-attachments/assets/48fd8bf9-9cb3-41d7-a78c-591032f471d5" />
 
 ---
 
-## PROGRAM 2: PL/SQL FUNCTION TO RETURN THE FACTORIAL OF A NUMBER
+## 2. Write a PL/SQL Function to Return the Factorial of a Number
 
-### Algorithm / Steps
+### Steps:
+- Create a function named `get_factorial`.
+- Declare a parameter to accept a number.
+- Use a loop to calculate the factorial.
+- Return the result using the `RETURN` statement.
+- Call the function using a `SELECT` statement or in an anonymous block.
 
-1. Create a function named `get_factorial`.
-2. Declare an input parameter to accept a number.
-3. Initialize the factorial variable to 1.
-4. Use a FOR loop from 1 to the given number.
-5. Multiply the factorial variable by the loop counter.
-6. Return the calculated factorial using the RETURN statement.
-7. Call the function using a SELECT statement.
+**Expected Output:**  
+Factorial of 5 is 120
+## Program
+```
+SET SERVEROUTPUT ON;
 
-### Program
-
-```sql
-CREATE OR REPLACE FUNCTION get_factorial(
-    n IN NUMBER
-)
+CREATE OR REPLACE FUNCTION get_factorial(n IN NUMBER)
 RETURN NUMBER
 IS
     fact NUMBER := 1;
@@ -138,41 +108,32 @@ BEGIN
     RETURN fact;
 END;
 /
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Factorial of 5 is ' || get_factorial(5));
+END;
+/
 ```
-
-### Calling the Function
-
-```sql
-SELECT get_factorial(5) AS factorial
-FROM DUAL;
-```
-
-### Output
-
-<img width="712" height="230" alt="image" src="https://github.com/user-attachments/assets/09641f26-b035-41ed-a5b5-962a51c0ccd4" />
-<img width="323" height="85" alt="image" src="https://github.com/user-attachments/assets/a14ec43c-12ad-420a-8d47-3bc365a524ff" />
+## Output
+<img width="675" height="240" alt="image" src="https://github.com/user-attachments/assets/3ea2e1da-2534-41ef-a41b-716ed2135c01" />
 
 ---
 
-## PROGRAM 3: PL/SQL PROCEDURE TO CHECK WHETHER A NUMBER IS EVEN OR ODD
+## 3. Write a PL/SQL Procedure to Check Whether a Number is Even or Odd
 
-### Algorithm / Steps
+### Steps:
+- Create a procedure named `check_even_odd`.
+- Accept an input parameter.
+- Use the `MOD` function to check if the number is divisible by 2.
+- Display whether it is Even or Odd using `DBMS_OUTPUT.PUT_LINE`.
 
-1. Create a procedure named `check_even_odd`.
-2. Declare an input parameter to accept a number.
-3. Use the MOD function to check whether the number is divisible by 2.
-4. If the remainder is 0, display EVEN.
-5. Otherwise, display ODD.
-6. Call the procedure with a number as input.
-
-### Program
-
-```sql
+**Expected Output:**  
+12 is Even
+## Program
+```
 SET SERVEROUTPUT ON;
 
-CREATE OR REPLACE PROCEDURE check_even_odd(
-    n IN NUMBER
-)
+CREATE OR REPLACE PROCEDURE check_even_odd(n IN NUMBER)
 IS
 BEGIN
     IF MOD(n, 2) = 0 THEN
@@ -182,136 +143,88 @@ BEGIN
     END IF;
 END;
 /
-```
 
-### Calling the Procedure
-
-```sql
 EXEC check_even_odd(12);
 ```
-
-### Output
-
-<img width="412" height="225" alt="image" src="https://github.com/user-attachments/assets/a1a38efd-b832-413d-bc8c-a4f6f843c7fe" />
-<img width="342" height="167" alt="image" src="https://github.com/user-attachments/assets/a77c8e6f-4feb-4b44-8874-4521b1c4bb21" />
+## Output
+<img width="466" height="212" alt="image" src="https://github.com/user-attachments/assets/430aec67-634b-4718-99ab-84781028550e" />
 
 ---
 
-## PROGRAM 4: PL/SQL FUNCTION TO RETURN THE REVERSE OF A NUMBER
+## 4. Write a PL/SQL Function to Return the Reverse of a Number
 
-### Algorithm / Steps
+### Steps:
+- Create a function named `reverse_number`.
+- Accept an input number as parameter.
+- Use a loop to reverse the digits of the number.
+- Return the reversed number.
+- Call the function and display the output.
 
-1. Create a function named `reverse_number`.
-2. Declare an input parameter to accept a number.
-3. Initialize the reverse variable to 0.
-4. Use a WHILE loop until the number becomes 0.
-5. Extract the last digit using MOD(n,10).
-6. Add the extracted digit to the reverse number.
-7. Remove the last digit using TRUNC(n/10).
-8. Return the reversed number.
-9. Call the function and display the result.
+**Expected Output:**  
+Reversed number of 1234 is 4321
+## Program
+```
+SET SERVEROUTPUT ON;
 
-### Program
-
-```sql
-CREATE OR REPLACE FUNCTION reverse_number(
-    n IN NUMBER
-)
+CREATE OR REPLACE FUNCTION reverse_number(n IN NUMBER)
 RETURN NUMBER
 IS
     num NUMBER := n;
-    digit NUMBER;
     rev NUMBER := 0;
 BEGIN
     WHILE num > 0 LOOP
-        digit := MOD(num, 10);
-
-        rev := rev * 10 + digit;
-
+        rev := (rev * 10) + MOD(num, 10);
         num := TRUNC(num / 10);
     END LOOP;
 
     RETURN rev;
 END;
 /
-```
 
-### Calling the Function
-
-```sql
-SELECT reverse_number(1234) AS reversed_number
-FROM DUAL;
-```
-
-### Output
-
-<img width="401" height="217" alt="image" src="https://github.com/user-attachments/assets/edce854b-0488-4378-9f82-6e931d776bf0" />
-<img width="308" height="92" alt="image" src="https://github.com/user-attachments/assets/20d1fe6c-9cdf-45dd-8f77-149fbd7bcb50" />
-
----
-
-## PROGRAM 5: PL/SQL PROCEDURE TO DISPLAY THE MULTIPLICATION TABLE OF A NUMBER
-
-### Algorithm / Steps
-
-1. Create a procedure named `print_table`.
-2. Declare an input parameter to accept a number.
-3. Use a FOR loop from 1 to 10.
-4. Multiply the input number by the loop counter.
-5. Display the multiplication results using `DBMS_OUTPUT.PUT_LINE`.
-6. Call the procedure with a number as input.
-
-### Program
-
-```sql
-SET SERVEROUTPUT ON;
-
-CREATE OR REPLACE PROCEDURE print_table(
-    n IN NUMBER
-)
-IS
 BEGIN
-    FOR i IN 1..10 LOOP
-        DBMS_OUTPUT.PUT_LINE(
-            n || ' x ' || i || ' = ' || (n * i)
-        );
-    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Reversed number of 1234 is ' || reverse_number(1234));
 END;
 /
 ```
+## Output
+<img width="753" height="260" alt="image" src="https://github.com/user-attachments/assets/c625ca59-ef86-416c-b6dc-deefc852f8ca" />
 
-### Calling the Procedure
+---
 
-```sql
+## 5. Write a PL/SQL Procedure to Display the Multiplication Table of a Number
+
+### Steps:
+- Create a procedure named `print_table`.
+- Accept an input number.
+- Use a loop from 1 to 10 to multiply the input number.
+- Display the multiplication results using `DBMS_OUTPUT.PUT_LINE`.
+
+**Expected Output:**  
+Multiplication table of 5:  
+5 x 1 = 5  
+5 x 2 = 10  
+5 x 3 = 15  
+...  
+5 x 10 = 50
+## Program
+```
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE print_table(n IN NUMBER)
+IS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Multiplication table of ' || n || ':');
+
+    FOR i IN 1..10 LOOP
+        DBMS_OUTPUT.PUT_LINE(n || ' x ' || i || ' = ' || (n * i));
+    END LOOP;
+END;
+/
+
 EXEC print_table(5);
 ```
-
-### Output
-
-<img width="485" height="231" alt="image" src="https://github.com/user-attachments/assets/7cf178b2-a7f9-4b20-80b6-495736e628b5" />
-<img width="380" height="265" alt="image" src="https://github.com/user-attachments/assets/f9bcc1ca-b75d-47fb-aa63-907adbda742d" />
-
----
-
-## IMPORTANT PL/SQL CONCEPTS
-
-| Concept | Description |
-|---|---|
-| Procedure | Subprogram that performs an operation |
-| Function | Subprogram that returns a value |
-| CREATE OR REPLACE | Creates a new subprogram or replaces an existing one |
-| IN | Passes a value into a procedure or function |
-| OUT | Returns a value through a parameter |
-| IN OUT | Passes a value in and returns its modified value |
-| IS | Begins the declaration section of a subprogram |
-| RETURN | Returns a value from a function |
-| MOD() | Returns the remainder |
-| TRUNC() | Removes the fractional part |
-| DUAL | Oracle's special one-row table |
-| DBMS_OUTPUT.PUT_LINE | Displays output |
-
----
+## Output
+<img width="432" height="365" alt="image" src="https://github.com/user-attachments/assets/10561fdb-9e01-4e27-87a6-088c4e219943" />
 
 ## RESULT
-
-Thus, the PL/SQL programs using procedures and functions for calculations, decision-making, and looping were successfully written, compiled, and executed.
+Thus, the PL/SQL programs using procedures and functions were written, compiled, and executed successfully.
